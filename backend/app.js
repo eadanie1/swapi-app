@@ -10,7 +10,8 @@ const fastify = Fastify({
   logger: true
 });
 fastify.register(cors, { 
-  origin: '*'
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE']
  })
 
 export const collection = [
