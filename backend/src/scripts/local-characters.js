@@ -17,23 +17,23 @@ export async function getIndividualCharacterLocally(req, res) {
 export const routesLocal = [
   {
     path: '/api/people/',
-    handler: async (req, res) => {
+    handler: async (request, reply) => {
       try {
         const fullListOfCharacters = await getFullCollectionLocally();
-        return res.json(fullListOfCharacters);
+        return reply.send(fullListOfCharacters);
       } catch (err) {
         console.error('Error reading file', err.message);
-        return res.status(500).json({ error: 'Internal Server Error'});
+        return reply.status(500).send({ error: 'Internal Server Error'});
       }
     }
   },
   {
     path: '/api/people/:id',
-    handler: async (req, res) => {
+    handler: async (request, reply) => {
       try {
-        const singleCharacter = await getIndividualCharacterLocally(req, res);
+        const singleCharacter = await getIndividualCharacterLocally(request, reply);
         if (singleCharacter) {
-          return res.json(singleCharacter);
+          return reply.send(singleCharacter);
         }
       } catch (err) {
         console.error('Error reading file', err.message);

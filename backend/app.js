@@ -1,14 +1,17 @@
 
-import express from 'express';
-import cors from 'cors';
 import { routesLocal } from './src/scripts/local-characters.js';
 import { addCharacterRoute } from './src/scripts/add-character.js';
 import { moveRoute } from './src/scripts/move-character.js';
 import deletionHandler from './src/scripts/delete-character.js';
-const app = express();
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
 
-app.use(express.json());
-app.use(cors());
+const fastify = Fastify({
+  logger: true
+});
+fastify.register(cors, { 
+  origin: '*'
+ })
 
 export const collection = [
   {id: 1, 
@@ -23,28 +26,32 @@ export const collection = [
 
 
 routesLocal.forEach(route => {
-  app.get(route.path, route.handler);
+  fastify.get(route.path, route.handler);
 });
 
 
 addCharacterRoute.forEach(route => {
-  app.post(route.path, route.handler)
+  fastify.post(route.path, route.handler)
 });
 
 
 moveRoute.forEach(route => {
-  app.patch(route.path, route.handler);
+  fastify.patch(route.path, route.handler);
 });
 
 
 deletionHandler.deletionRoute.forEach(route => {
-  app.delete(route.path, route.handler);
+  fastify.delete(route.path, route.handler);
 });
 
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}...`)
+fastify.listen({ port }, (err, address) => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+  fastify.log.info(`Listening on port ${port}...`)
 });
 
 export default {collection}

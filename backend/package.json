@@ -13,9 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^9.0.1",
     "axios": "^1.6.4",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "fastify": "^4.28.1",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
