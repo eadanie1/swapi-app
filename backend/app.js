@@ -11,7 +11,7 @@ const fastify = Fastify({
 });
 
 fastify.register(cors, { 
-  origin: '*',
+  origin: 'https://swapi-fetch.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true,
