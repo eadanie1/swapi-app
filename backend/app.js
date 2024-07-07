@@ -11,7 +11,9 @@ const fastify = Fastify({
 });
 fastify.register(cors, { 
   origin: '*',
-  methods: ['GET', 'POST', 'PATCH', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+  credentials: true,
  })
 
 export const collection = [
@@ -24,7 +26,6 @@ export const collection = [
   {id: 4, 
   name: 'R2-D2'},
 ];
-
 
 routesLocal.forEach(route => {
   fastify.get(route.path, route.handler);
@@ -44,7 +45,6 @@ moveRoute.forEach(route => {
 deletionHandler.deletionRoute.forEach(route => {
   fastify.delete(route.path, route.handler);
 });
-
 
 const port = process.env.PORT || 3000;
 fastify.listen({ port }, (err, address) => {
