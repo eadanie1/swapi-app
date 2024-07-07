@@ -9,12 +9,25 @@ import cors from '@fastify/cors';
 const fastify = Fastify({
   logger: true
 });
+
 fastify.register(cors, { 
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true,
- })
+});
+
+// fastify.options('*', (request, reply) => {
+//   reply.header('Access-Control-Allow-Origin', '*');
+//   reply.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+//   reply.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   reply.send();
+// });
+
+fastify.addHook('onSend', (request, reply, payload, done) => {
+  console.log(reply.getHeaders());
+  done();
+});
 
 export const collection = [
   {id: 1, 

@@ -5,10 +5,10 @@ export async function getFullCollectionLocally() {
   return collection;
 }
 
-export async function getIndividualCharacterLocally(req, res) {
-  const character = collection.find(c => c.id === parseInt(req.params.id));
+export async function getIndividualCharacterLocally(request, reply) {
+  const character = collection.find(c => c.id === parseInt(request.params.id));
   if (!character) {
-    return res.status(404).json({error: 'No character exists with the given ID'});
+    return reply.status(404).send({error: 'No character exists with the given ID'});
   }
   return character;
 }
