@@ -5,10 +5,10 @@ export async function getFullCollectionLocally() {
   return collection;
 }
 
-export async function getIndividualCharacterLocally(request, reply) {
-  const character = collection.find(c => c.id === parseInt(request.params.id));
+export async function getIndividualCharacterLocally(req, res) {
+  const character = collection.find(c => c.id === parseInt(req.params.id));
   if (!character) {
-    return reply.status(404).send({error: 'No character exists with the given ID'});
+    return res.status(404).json({error: 'No character exists with the given ID'});
   }
   return character;
 }
@@ -17,23 +17,23 @@ export async function getIndividualCharacterLocally(request, reply) {
 export const routesLocal = [
   {
     path: '/api/people/',
-    handler: async (request, reply) => {
+    handler: async (req, res) => {
       try {
         const fullListOfCharacters = await getFullCollectionLocally();
-        return reply.send(fullListOfCharacters);
+        return res.json(fullListOfCharacters);
       } catch (err) {
         console.error('Error reading file', err.message);
-        return reply.status(500).send({ error: 'Internal Server Error'});
+        return res.status(500).json({ error: 'Internal Server Error'});
       }
     }
   },
   {
     path: '/api/people/:id',
-    handler: async (request, reply) => {
+    handler: async (req, res) => {
       try {
-        const singleCharacter = await getIndividualCharacterLocally(request, reply);
+        const singleCharacter = await getIndividualCharacterLocally(req, res);
         if (singleCharacter) {
-          return reply.send(singleCharacter);
+          return res.json(singleCharacter);
         }
       } catch (err) {
         console.error('Error reading file', err.message);
